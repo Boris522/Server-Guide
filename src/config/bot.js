@@ -189,14 +189,6 @@ export const botConfig = {
   },
 
   // =========================
-  // SHOP SETTINGS
-  // =========================
-  // Add shop defaults here when needed.
-  shop: {
-    
-  },
-
-  // =========================
   // TICKET SYSTEM
   // =========================
   tickets: {
