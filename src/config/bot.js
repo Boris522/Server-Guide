@@ -38,7 +38,7 @@ export const botConfig = {
   commands: {
     // Bot owner user IDs (comma-separated in OWNER_IDS env var).
     // Owners can access owner/admin-level bot commands.
-    owners: process.env.OWNER_IDS?.split("!") || [],
+    owners: process.env.OWNER_IDS?.split(",") || [],
 
     // Default wait time between command uses (in seconds).
     defaultCooldown: 3, 
@@ -149,7 +149,45 @@ export const botConfig = {
       url: null,
     },
   },
-  
+
+  // =========================
+  // ECONOMY SETTINGS
+  // =========================
+  economy: {
+    currency: {
+      // Currency display name.
+      name: "coins",
+      // Plural display name.
+      namePlural: "coins",
+      // Currency symbol shown in balances.
+      symbol: "$",
+    },
+
+    // Starting balance for new users.
+    startingBalance: 0,
+
+    // Maximum bank amount before upgrades (if upgrades are used).
+    baseBankCapacity: 100000,
+
+    // Daily reward amount.
+    dailyAmount: 100,
+
+    // Work command random payout range.
+    workMin: 10,
+    workMax: 100,
+
+    // Beg command random payout range.
+    begMin: 5,
+    begMax: 50,
+
+    // Chance to succeed when robbing (0.4 = 40%).
+    robSuccessRate: 0.4,
+
+    // Jail time after failed rob (milliseconds).
+    // 3600000 = 1 hour.
+    robFailJailTime: 3600000, 
+  },
+
   // =========================
   // TICKET SYSTEM
   // =========================
@@ -222,6 +260,88 @@ export const botConfig = {
 
     // Role IDs that bypass giveaway restrictions.
     bypassRoles: [],
+  },
+
+  // =========================
+  // BIRTHDAY SETTINGS
+  // =========================
+  birthday: {
+    // Role ID given to users on their birthday.
+    defaultRole: null,
+
+    // Channel ID where birthday announcements are posted.
+    announcementChannel: null,
+
+    // Timezone used to calculate birthday dates.
+    timezone: "UTC",
+  },
+
+  // =========================
+  // VERIFICATION SETTINGS
+  // =========================
+  verification: {
+    // Message shown when posting the verification panel.
+    defaultMessage: "Click the button below to verify yourself and gain access to the server!",
+
+    // Text on the verification button.
+    defaultButtonText: "Verify",
+
+    // Automatic verification behavior.
+    autoVerify: {
+      // How automatic verification decides who is auto-approved:
+      // - "none"        = everyone is auto-verified immediately
+      // - "account_age" = account must be older than set days
+      // - "server_size" = auto-verify everyone only in smaller servers
+      defaultCriteria: "none",
+
+      // Days used when `defaultCriteria` is `account_age`.
+      defaultAccountAgeDays: 7,
+
+      // Member count threshold used when `defaultCriteria` is `server_size`.
+      // Example: 1000 means auto-verify if server has fewer than 1000 members.
+      serverSizeThreshold: 1000,
+
+      // Allowed safety limits for account-age requirements.
+      // 1 = minimum day, 365 = maximum days.
+      minAccountAge: 1,      
+      maxAccountAge: 365,    
+
+      // If true, user receives a DM after verification.
+      sendDMNotification: true,
+
+      // Human-readable descriptions for each criteria mode.
+      criteria: {
+        account_age: "Account must be older than specified days",
+        server_size: "All users if server has less than 1000 members",
+        none: "All users immediately"
+      }
+    },
+
+    // Minimum time between verification attempts (milliseconds).
+    // 5000 = 5 seconds.
+    verificationCooldown: 5000,  
+
+    // Maximum failed attempts allowed inside the time window below.
+    maxVerificationAttempts: 3,   
+
+    // Time window for counting attempts (milliseconds).
+    // 60000 = 1 minute.
+    attemptWindow: 60000,          
+
+    // In-memory safety limits (helps avoid unbounded memory growth).
+    maxCooldownEntries: 10000,
+    maxAttemptEntries: 10000,
+    // Cleanup frequency for cooldown/attempt maps (milliseconds).
+    // 300000 = 5 minutes.
+    cooldownCleanupInterval: 300000, 
+    // Maximum metadata payload size for audit entries (bytes).
+    maxAuditMetadataBytes: 4096,
+    // Maximum number of audit entries kept in memory.
+    maxInMemoryAuditEntries: 1000,
+  // If true, log every verification action.
+  logAllVerifications: true,
+  // If true, preserve verification audit history.
+  keepAuditTrail: true,
   },
 
   // =========================
